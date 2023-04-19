@@ -1,5 +1,8 @@
 use clap::Parser;
-use time::{format_description::well_known::Rfc2822, OffsetDateTime, Time};
+use time::{
+	ext::NumericalDuration, format_description::well_known::Rfc2822,
+	OffsetDateTime, Time,
+};
 
 #[derive(Parser)]
 #[command(version, about)]
@@ -15,6 +18,12 @@ struct Opts {
 	/// Print human readable date along with timestamp.
 	#[arg(short = 'p', long)]
 	date: bool,
+
+	/// Use day after n days from today.
+	///
+	/// Use negative numbers to revers.
+	#[arg(short, long)]
+	next: Option<i64>,
 }
 
 fn main() {
@@ -41,11 +50,11 @@ fn format(ts: i64, opts: &Opts) -> String {
 }
 
 fn current(opts: &Opts) -> OffsetDateTime {
-	if opts.utc {
+	(if opts.utc {
 		OffsetDateTime::now_utc()
 	} else {
 		OffsetDateTime::now_local().unwrap()
-	}
+	}) + opts.next.unwrap_or(0).days()
 }
 
 fn print_date(text: String, time: OffsetDateTime, opts: &Opts) -> String {
