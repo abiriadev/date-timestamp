@@ -1,4 +1,5 @@
 use clap::Parser;
+use owo_colors::OwoColorize;
 use time::{
 	ext::NumericalDuration, format_description::well_known::Rfc2822,
 	OffsetDateTime, Time,
@@ -61,9 +62,9 @@ fn print_date(text: String, time: OffsetDateTime, opts: &Opts) -> String {
 	if opts.date {
 		format!(
 			"{}\n{text}",
-			time.format(&Rfc2822).unwrap()
+			time.format(&Rfc2822).unwrap().green()
 		)
 	} else {
-		text
+		format!("{}", text.green())
 	}
 }

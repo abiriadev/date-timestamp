@@ -6,4 +6,5 @@ description = "Prints the UNIX timestamp of today's midnight"
 
 [dependencies]
 clap = { version = "4.2.3", features = ["derive"] }
+owo-colors = "3.5.0"
 time = { version = "0.3.20", features = ["local-offset", "formatting"] }
